@@ -493,6 +493,226 @@
     color: var(--text-light);
     font-size: 0.95rem;
   }
+  /* Améliorations CSS pour Magdeleine Solutions */
+
+/* Amélioration de l'affichage mobile */
+@media (max-width: 576px) {
+  .container {
+    padding: 0 15px;
+  }
+
+  .hero h1 {
+    font-size: 1.8rem !important;
+  }
+
+  .hero p {
+    font-size: 0.95rem !important;
+  }
+
+  .section {
+    padding: 60px 0;
+  }
+
+  .section-title h2 {
+    font-size: 1.8rem !important;
+  }
+
+  .feature-card,
+  .service-card,
+  .contact-card {
+    padding: 25px 20px;
+  }
+
+  .footer-content {
+    gap: 30px;
+  }
+
+  /* Amélioration du formulaire de simulation sur mobile */
+  .simulation-form,
+  .simulation-result {
+    padding: 25px 20px;
+  }
+
+  .monthly-payment-value {
+    font-size: 1.8rem !important;
+  }
+
+  .amortization-table {
+    max-height: 250px;
+  }
+}
+
+/* Amélioration des sliders */
+input[type="range"] {
+  -webkit-appearance: none;
+  height: 8px;
+  border-radius: 5px;
+  background: #ddd;
+  outline: none;
+  margin-top: 10px;
+  transition: background 0.3s;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--secondary);
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s;
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--secondary);
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  border: none;
+  transition: all 0.3s;
+}
+
+input[type="range"]:hover::-webkit-slider-thumb,
+input[type="range"]:active::-webkit-slider-thumb {
+  transform: scale(1.1);
+  box-shadow: 0 3px 8px rgba(200, 164, 92, 0.4);
+}
+
+input[type="range"]:hover::-moz-range-thumb,
+input[type="range"]:active::-moz-range-thumb {
+  transform: scale(1.1);
+  box-shadow: 0 3px 8px rgba(200, 164, 92, 0.4);
+}
+
+/* Amélioration des animations tactiles */
+.service-card,
+.feature-card,
+.contact-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+@media (max-width: 768px) {
+  .service-card:active,
+  .feature-card:active,
+  .contact-card:active {
+    transform: scale(0.98);
+  }
+}
+
+/* Amélioration de l'accessibilité */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+:focus {
+  outline: 2px solid var(--secondary);
+  outline-offset: 2px;
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Bouton de mode sombre */
+.dark-mode-toggle {
+  position: fixed;
+  bottom: 90px;
+  right: 30px;
+  width: 50px;
+  height: 50px;
+  background: var(--secondary);
+  color: var(--primary-dark);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  cursor: pointer;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transition: var(--transition);
+  z-index: 999;
+  border: none;
+}
+
+.dark-mode-toggle:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Styles pour le mode sombre */
+body.dark-mode {
+  --primary: #1a3a5f;
+  --primary-light: #2a4a6f;
+  --primary-dark: #0a2540;
+  --secondary: #d9bc7d;
+  --secondary-light: #e9cc8d;
+  --secondary-dark: #c8a45c;
+  --accent: #1a2a3f;
+  --text: #e6e6e6;
+  --text-light: #cccccc;
+  --light: #1a1a1a;
+  --white: #2a2a2a;
+  --dark: #f8f9fa;
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  --shadow-strong: 0 15px 35px rgba(0, 0, 0, 0.4);
+}
+
+/* Amélioration des formulaires */
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: var(--secondary) !important;
+  box-shadow: 0 0 0 3px rgba(200, 164, 92, 0.1) !important;
+}
+
+/* Amélioration des animations de chargement */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.5s ease forwards;
+}
+
+/* Amélioration de l'affichage des tableaux */
+.amortization-table {
+  scrollbar-width: thin;
+  scrollbar-color: var(--secondary) rgba(0, 0, 0, 0.1);
+}
+
+.amortization-table::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.amortization-table::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+}
+
+.amortization-table::-webkit-scrollbar-thumb {
+  background-color: var(--secondary);
+  border-radius: 4px;
+}
 
   /* Services Section */
   .services-tabs {
@@ -1333,13 +1553,12 @@
       </button>
       <ul id="nav-menu">
         <li><a href="#hero" class="i18n-link" data-i18n="nav_home">Accueil</a></li>
-        <li><a href="#about" class="i18n-link" data-i18n="nav_about">À propos</a></li>
         <li><a href="#testimonials" class="i18n-link" data-i18n="nav_testimonials">Témoignages</a></li>
         <li><a href="biographie.html" class="i18n-link" data-i18n="nav_biography">Biographie</a></li>
         <li><a href="simulation.html" class="i18n-link" data-i18n="nav_simulation">Simulation</a></li>
         <li><a href="formulaire_demande.html" class="nav-cta i18n-link" data-i18n="nav_loan_request">Demande de prêt</a></li>
-      </ul>
-      <div class="language-selector-container">
+        <li>
+          <div class="language-selector-container">
         <select id="language-selector" class="language-selector" aria-label="Changer de langue">
           <option value="fr" data-i18n="lang_fr">Français</option>
           <option value="en" data-i18n="lang_en">Anglais</option>
@@ -1349,6 +1568,8 @@
           <option value="pt" data-i18n="lang_pt">Portugais</option>
         </select>
       </div>
+        </li>
+      </ul>
     </nav>
   </div>
 </header>
@@ -1388,7 +1609,7 @@
         <a href="#services" class="btn btn-primary" data-i18n="about_btn">Nos services</a>
       </div>
       <div class="about-image" data-aos="fade-left" data-aos-duration="1000">
-        <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="Magdeleine Solutions équipe">
+        <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="Magdeleine Solutions équipe">
       </div>
     </div>
   </div>
@@ -1860,6 +2081,11 @@
   <i class="fas fa-arrow-up"></i>
 </div>
 
+<!-- Mode sombre -->
+<button class="dark-mode-toggle" id="dark-mode-toggle" aria-label="Basculer le mode sombre">
+  <i class="fas fa-moon"></i>
+</button>
+
 <!-- Scripts -->
 <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
 <script src="translations.js"></script>
@@ -2005,6 +2231,42 @@
   }, { threshold: 0.5 });
 
   observer.observe(statsSection);
+  
+  // Mode sombre
+  const darkModeToggle = document.getElementById('dark-mode-toggle');
+  
+  // Vérifier si le mode sombre est déjà activé
+  const isDarkMode = localStorage.getItem('darkMode') === 'true';
+  
+  // Appliquer le mode sombre si nécessaire
+  if (isDarkMode) {
+    document.body.classList.add('dark-mode');
+    darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+  }
+  
+  // Ajouter l'événement de basculement du mode sombre
+  darkModeToggle.addEventListener('click', () => {
+    document.body.classList.toggle('dark-mode');
+    const isDark = document.body.classList.contains('dark-mode');
+    localStorage.setItem('darkMode', isDark);
+    
+    if (isDark) {
+      darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+    } else {
+      darkModeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+    }
+  });
+  
+  // Ajouter un effet hover
+  darkModeToggle.addEventListener('mouseenter', () => {
+    darkModeToggle.style.transform = 'translateY(-5px)';
+    darkModeToggle.style.boxShadow = '0 8px 25px rgba(0, 0, 0, 0.15)';
+  });
+  
+  darkModeToggle.addEventListener('mouseleave', () => {
+    darkModeToggle.style.transform = 'translateY(0)';
+    darkModeToggle.style.boxShadow = '0 5px 15px rgba(0, 0, 0, 0.1)';
+  });
 </script>
 <script>
   // Listen for language changes
@@ -2012,7 +2274,25 @@
     // Update links when language changes
     updateLinks();
   });
+  
+  // Function to update links with current language
+  function updateLinks() {
+    const currentLang = localStorage.getItem('preferredLanguage') || 'fr';
+    const links = document.querySelectorAll('.i18n-link');
+    
+    links.forEach(link => {
+      const href = link.getAttribute('href');
+      if (href && !href.includes('#') && !href.includes('?lang=')) {
+        // Ajouter le paramètre de langue seulement si le lien ne contient pas déjà un paramètre de langue
+        link.setAttribute('href', `${href}${href.includes('?') ? '&' : '?'}lang=${currentLang}`);
+      }
+    });
+  }
+  
+  // Exécuter au chargement de la page
+  document.addEventListener('DOMContentLoaded', function() {
+    updateLinks();
+  });
 </script>
-  <script src="amelioration_site.js"></script>
 </body>
 </html>
