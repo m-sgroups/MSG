@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Simulation de prêt</title>
   <link rel="shortcut icon" href="logoMsg.png" type="image/x-icon">
-  <link rel="stylesheet" href="css/styles.css">
   <link href="https://unpkg.com/aos@next/dist/aos.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
   <style>
@@ -297,27 +296,42 @@
       background: #ddd;
       outline: none;
       margin-top: 10px;
+      transition: background 0.3s;
     }
 
     .range-input::-webkit-slider-thumb {
       -webkit-appearance: none;
       appearance: none;
-      width: 20px;
-      height: 20px;
+      width: 22px;
+      height: 22px;
       border-radius: 50%;
       background: var(--secondary);
       cursor: pointer;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s;
     }
 
     .range-input::-moz-range-thumb {
-      width: 20px;
-      height: 20px;
+      width: 22px;
+      height: 22px;
       border-radius: 50%;
       background: var(--secondary);
       cursor: pointer;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
       border: none;
+      transition: all 0.3s;
+    }
+
+    .range-input:hover::-webkit-slider-thumb,
+    .range-input:active::-webkit-slider-thumb {
+      transform: scale(1.1);
+      box-shadow: 0 3px 8px rgba(200, 164, 92, 0.4);
+    }
+
+    .range-input:hover::-moz-range-thumb,
+    .range-input:active::-moz-range-thumb {
+      transform: scale(1.1);
+      box-shadow: 0 3px 8px rgba(200, 164, 92, 0.4);
     }
 
     .range-labels {
@@ -439,6 +453,23 @@
       max-height: 300px;
       border-radius: var(--radius-sm);
       border: 1px solid rgba(0, 0, 0, 0.1);
+      scrollbar-width: thin;
+      scrollbar-color: var(--secondary) rgba(0, 0, 0, 0.1);
+    }
+
+    .amortization-table::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    .amortization-table::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.1);
+      border-radius: 4px;
+    }
+
+    .amortization-table::-webkit-scrollbar-thumb {
+      background-color: var(--secondary);
+      border-radius: 4px;
     }
 
     .amortization-table table {
@@ -980,6 +1011,184 @@
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     }
 
+    /* Styles pour le sélecteur de langue */
+    .language-selector-container {
+      position: relative;
+      margin-left: 20px;
+    }
+    
+    .language-selector {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: var(--white);
+      padding: 8px 30px 8px 12px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      background-size: 12px;
+      transition: var(--transition);
+    }
+    
+    .language-selector:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+    
+    .language-selector:focus {
+      outline: none;
+      box-shadow: 0 0 0 2px var(--secondary);
+    }
+    
+    .language-selector option {
+      background-color: var(--primary);
+      color: var(--white);
+    }
+
+    /* Bouton de mode sombre */
+    .dark-mode-toggle {
+      position: fixed;
+      bottom: 90px;
+      right: 30px;
+      width: 50px;
+      height: 50px;
+      background: var(--secondary);
+      color: var(--primary-dark);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      transition: var(--transition);
+      z-index: 999;
+      border: none;
+    }
+
+    .dark-mode-toggle:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Styles pour le mode sombre */
+    body.dark-mode {
+      --primary: #1a3a5f;
+      --primary-light: #2a4a6f;
+      --primary-dark: #0a2540;
+      --secondary: #d9bc7d;
+      --secondary-light: #e9cc8d;
+      --secondary-dark: #c8a45c;
+      --accent: #1a2a3f;
+      --text: #e6e6e6;
+      --text-light: #cccccc;
+      --light: #1a1a1a;
+      --white: #2a2a2a;
+      --dark: #f8f9fa;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      --shadow-strong: 0 15px 35px rgba(0, 0, 0, 0.4);
+    }
+
+    body.dark-mode .preloader {
+      background: #0a2540;
+    }
+    
+    body.dark-mode header {
+      background: rgba(26, 58, 95, 0.95);
+    }
+    
+    body.dark-mode .feature-card,
+    body.dark-mode .service-card,
+    body.dark-mode .testimonial-content,
+    body.dark-mode .contact-card,
+    body.dark-mode .contact-form-container,
+    body.dark-mode .simulation-form,
+    body.dark-mode .simulation-result {
+      background: #2a2a2a;
+      color: #e6e6e6;
+    }
+    
+    body.dark-mode .feature-icon,
+    body.dark-mode .service-icon,
+    body.dark-mode .contact-icon {
+      background: #1a2a3f;
+      color: #d9bc7d;
+    }
+    
+    body.dark-mode .footer-newsletter .newsletter-input {
+      background: rgba(255, 255, 255, 0.1);
+      color: #e6e6e6;
+    }
+    
+    body.dark-mode .dark-mode-toggle {
+      background: #d9bc7d;
+      color: #0a2540;
+    }
+    
+    body.dark-mode .dark-mode-toggle:hover {
+      background: #e9cc8d;
+      transform: translateY(-5px);
+    }
+    
+    body.dark-mode input,
+    body.dark-mode select,
+    body.dark-mode textarea {
+      background: rgba(255, 255, 255, 0.1);
+      color: #e6e6e6;
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+    
+    body.dark-mode input:focus,
+    body.dark-mode select:focus,
+    body.dark-mode textarea:focus {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: #d9bc7d;
+    }
+    
+    body.dark-mode .amortization-table {
+      background: #2a2a2a;
+      color: #e6e6e6;
+    }
+    
+    body.dark-mode .amortization-table th,
+    body.dark-mode .amortization-table td {
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+    
+    body.dark-mode .amortization-table th {
+      background: #1a2a3f;
+    }
+    
+    body.dark-mode .amortization-table tr:nth-child(even) {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    /* Amélioration de l'accessibilité */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border-width: 0;
+    }
+
+    :focus {
+      outline: 2px solid var(--secondary);
+      outline-offset: 2px;
+    }
+
+    :focus:not(:focus-visible) {
+      outline: none;
+    }
+
     /* Responsive Design */
     @media (max-width: 1200px) {
       .footer-content {
@@ -1043,6 +1252,12 @@
         width: 95%;
         padding: 20px;
       }
+      
+      .language-selector-container {
+        position: absolute;
+        top: 20px;
+        right: 70px;
+      }
     }
 
     @media (max-width: 576px) {
@@ -1077,59 +1292,28 @@
         width: 100%;
       }
     }
-    
-    /* Styles pour le sélecteur de langue */
-    .language-selector-container {
-      position: relative;
-      margin-left: 20px;
-    }
-    
-    .language-selector {
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      color: var(--white);
-      padding: 8px 30px 8px 12px;
-      border-radius: 20px;
-      font-size: 0.9rem;
-      cursor: pointer;
-      appearance: none;
-      -webkit-appearance: none;
-      -moz-appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 10px center;
-      background-size: 12px;
-      transition: var(--transition);
-    }
-    
-    .language-selector:hover {
-      background-color: rgba(255, 255, 255, 0.2);
-    }
-    
-    .language-selector:focus {
-      outline: none;
-      box-shadow: 0 0 0 2px var(--secondary);
-    }
-    
-    .language-selector option {
-      background-color: var(--primary);
-      color: var(--white);
-    }
-    
-    @media (max-width: 768px) {
-      .language-selector-container {
-        position: absolute;
-        top: 20px;
-        right: 70px;
+
+    /* Animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
       }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .fade-in-up {
+      animation: fadeInUp 0.5s ease forwards;
     }
   </style>
 </head>
 <body>
-  <body>
   <header>
     <div class="container header-container">
-      <a href="index_langue.html" class="logo i18n-link">
+      <a href="index.html" class="logo i18n-link">
         <div class="logo-circle">MSG</div>
         <div class="logo-text">Magdeleine Solutions</div>
       </a>
@@ -1446,6 +1630,7 @@
           <p data-i18n="footer_newsletter_desc">Inscrivez-vous à notre newsletter pour recevoir nos actualités et conseils financiers.</p>
           <form class="newsletter-form">
             <input type="email" data-i18n-placeholder="newsletter_placeholder" placeholder="Votre email" class="newsletter-input" required>
+              placeholder="Votre email" class="newsletter-input" required>
             <button type="submit" class="newsletter-button"><i class="fas fa-paper-plane"></i></button>
           </form>
           <div class="footer-contact">
@@ -1464,6 +1649,11 @@
   <div class="back-to-top" id="back-to-top">
     <i class="fas fa-arrow-up"></i>
   </div>
+
+  <!-- Mode sombre -->
+  <button class="dark-mode-toggle" id="dark-mode-toggle" aria-label="Basculer le mode sombre">
+    <i class="fas fa-moon"></i>
+  </button>
 
   <!-- Scripts -->
   <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
@@ -1673,11 +1863,9 @@
       
       // Sync range and input values
       function syncRangeAndInput() {
-        // Dans la fonction syncRangeAndInput(), remplacez la partie "Loan Amount" par :
-
         // Loan Amount - Steps of 1000€
         loanAmountRange.addEventListener('input', function() {
-            // Calculate nearest 500€ step
+            // Calculate nearest 1000€ step
             let value = parseInt(this.value);
             const step = 1000;
             value = Math.round(value / step) * step;
@@ -1689,7 +1877,7 @@
             this.value = value;
             loanAmountInput.value = value;
             loanAmountValue.textContent = formatCurrency(value);
-            });
+        });
 
         loanAmountInput.addEventListener('input', function() {
             let value = parseInt(this.value) || 2000; // Default to 2000 if NaN
@@ -1976,7 +2164,44 @@
       });
     }
   </script>
-    <script src="amelioration_site.js"></script>
-</body>
+  
+  <!-- Mode sombre script -->
+  <script>
+    // Mode sombre
+    const darkModeToggle = document.getElementById('dark-mode-toggle');
+    
+    // Vérifier si le mode sombre est déjà activé
+    const isDarkMode = localStorage.getItem('darkMode') === 'true';
+    
+    // Appliquer le mode sombre si nécessaire
+    if (isDarkMode) {
+      document.body.classList.add('dark-mode');
+      darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+    }
+    
+    // Ajouter l'événement de basculement du mode sombre
+    darkModeToggle.addEventListener('click', () => {
+      document.body.classList.toggle('dark-mode');
+      const isDark = document.body.classList.contains('dark-mode');
+      localStorage.setItem('darkMode', isDark);
+      
+      if (isDark) {
+        darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+      } else {
+        darkModeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+      }
+    });
+    
+    // Ajouter un effet hover
+    darkModeToggle.addEventListener('mouseenter', () => {
+      darkModeToggle.style.transform = 'translateY(-5px)';
+      darkModeToggle.style.boxShadow = '0 8px 25px rgba(0, 0, 0, 0.15)';
+    });
+    
+    darkModeToggle.addEventListener('mouseleave', () => {
+      darkModeToggle.style.transform = 'translateY(0)';
+      darkModeToggle.style.boxShadow = '0 5px 15px rgba(0, 0, 0, 0.1)';
+    });
+  </script>
 </body>
 </html>
