@@ -285,7 +285,48 @@
 
     .range-container {
       position: relative;
-      padding-bottom: 20px;
+      padding-bottom: 30px;
+    }
+
+    /* Styles pour les deux sliders */
+    .dual-slider-container {
+      position: relative;
+      padding-bottom: 40px;
+    }
+
+    .slider-tabs {
+      display: flex;
+      margin-bottom: 15px;
+      background: var(--light);
+      border-radius: var(--radius-sm);
+      padding: 4px;
+    }
+
+    .slider-tab {
+      flex: 1;
+      padding: 8px 12px;
+      background: transparent;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      color: var(--text-light);
+    }
+
+    .slider-tab.active {
+      background: var(--secondary);
+      color: var(--primary-dark);
+      box-shadow: 0 2px 8px rgba(200, 164, 92, 0.3);
+    }
+
+    .slider-section {
+      display: none;
+    }
+
+    .slider-section.active {
+      display: block;
     }
 
     .range-input {
@@ -344,12 +385,52 @@
 
     .range-value {
       position: absolute;
+      bottom: 15px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--primary);
+      background: var(--white);
+      padding: 4px 12px;
+      border-radius: 20px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .step-indicator {
+      position: absolute;
       bottom: 0;
       left: 50%;
       transform: translateX(-50%);
-      font-size: 0.9rem;
-      font-weight: 600;
-      color: var(--primary);
+      font-size: 0.75rem;
+      color: var(--text-light);
+      font-style: italic;
+    }
+
+    .input-error {
+      border-color: #dc3545 !important;
+      box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1) !important;
+    }
+
+    .error-icon {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #dc3545;
+      font-size: 1.2rem;
+      display: none;
+    }
+
+    .input-container {
+      position: relative;
+    }
+
+    .error-message {
+      color: #dc3545;
+      font-size: 0.8rem;
+      margin-top: 5px;
+      display: none;
     }
 
     .btn-calculate {
@@ -1357,16 +1438,48 @@
         <div class="simulation-form">
           <h3 data-i18n="sim_form_title">Paramètres du prêt</h3>
           <div class="form-group">
-            <label for="loanAmountRange" data-i18n="sim_amount_borrowed">Montant du Prêt</label>
-            <div class="range-container">
-              <input type="range" id="loanAmountRange" class="range-input" min="2000" max="1000000" value="100000">
-              <div class="range-labels">
-                <span>2 000 €</span>
-                <span>1 000 000 €</span>
+            <label for="loanAmount" data-i18n="sim_amount_borrowed">Montant du Prêt</label>
+            
+            <!-- Nouveau système avec deux sliders -->
+            <div class="dual-slider-container">
+              <!-- Onglets pour choisir la tranche -->
+              <div class="slider-tabs">
+                <button type="button" class="slider-tab active" id="tab-range1" data-range="1">
+                  2 000 € - 100 000 €
+                </button>
+                <button type="button" class="slider-tab" id="tab-range2" data-range="2">
+                  105 000 € - 1 000 000 €
+                </button>
               </div>
-              <div class="range-value" id="loanAmountValue">100 000,00 €</div>
+              
+              <!-- Slider pour la première tranche -->
+              <div class="slider-section active" id="range1-section">
+                <input type="range" id="loanAmountRange1" class="range-input" min="2000" max="100000" step="1000" value="50000">
+                <div class="range-labels">
+                  <span>2 000 €</span>
+                  <span>100 000 €</span>
+                </div>
+                <div class="range-value" id="loanAmountValue1">50 000,00 €</div>
+                <div class="step-indicator">Pas de 1 000 €</div>
+              </div>
+              
+              <!-- Slider pour la deuxième tranche -->
+              <div class="slider-section" id="range2-section">
+                <input type="range" id="loanAmountRange2" class="range-input" min="105000" max="1000000" step="5000" value="500000">
+                <div class="range-labels">
+                  <span>105 000 €</span>
+                  <span>1 000 000 €</span>
+                </div>
+                <div class="range-value" id="loanAmountValue2">500 000,00 €</div>
+                <div class="step-indicator">Pas de 5 000 €</div>
+              </div>
             </div>
-            <input type="number" id="loanAmount" min="2000" max="1000000" step="1000" value="100000">
+            
+            <div class="input-container">
+              <input type="number" id="loanAmount" min="2000" max="1000000" value="50000">
+              <i class="fas fa-times error-icon" id="errorIcon"></i>
+            </div>
+            <div class="error-message" id="errorMessage" data-i18n="error_min_amount">Le montant minimum est de 2 000 €</div>
           </div>
           
           <div class="form-group">
@@ -1630,7 +1743,6 @@
           <p data-i18n="footer_newsletter_desc">Inscrivez-vous à notre newsletter pour recevoir nos actualités et conseils financiers.</p>
           <form class="newsletter-form">
             <input type="email" data-i18n-placeholder="newsletter_placeholder" placeholder="Votre email" class="newsletter-input" required>
-              placeholder="Votre email" class="newsletter-input" required>
             <button type="submit" class="newsletter-button"><i class="fas fa-paper-plane"></i></button>
           </form>
           <div class="footer-contact">
@@ -1701,12 +1813,19 @@
       });
     });
 
-    // Loan Simulation Logic
+    // Loan Simulation Logic avec DEUX SLIDERS SÉPARÉS
     document.addEventListener('DOMContentLoaded', function() {
       // Elements
-      const loanAmountRange = document.getElementById('loanAmountRange');
+      const loanAmountRange1 = document.getElementById('loanAmountRange1');
+      const loanAmountRange2 = document.getElementById('loanAmountRange2');
       const loanAmountInput = document.getElementById('loanAmount');
-      const loanAmountValue = document.getElementById('loanAmountValue');
+      const loanAmountValue1 = document.getElementById('loanAmountValue1');
+      const loanAmountValue2 = document.getElementById('loanAmountValue2');
+      
+      const tabRange1 = document.getElementById('tab-range1');
+      const tabRange2 = document.getElementById('tab-range2');
+      const range1Section = document.getElementById('range1-section');
+      const range2Section = document.getElementById('range2-section');
       
       const loanDurationRange = document.getElementById('loanDurationRange');
       const loanDurationSelect = document.getElementById('loanDuration');
@@ -1736,6 +1855,28 @@
       const closeModal = document.getElementById('closeModal');
       const closeModalBtn = document.getElementById('closeModalBtn');
       const downloadPdfBtn = document.getElementById('downloadPdfBtn');
+      
+      let currentRange = 1; // 1 pour première tranche, 2 pour deuxième tranche
+      let isUpdatingFromSlider = false;
+      
+      // Fonction pour valider et afficher les erreurs
+      function validateAmount(amount) {
+        const errorIcon = document.getElementById('errorIcon');
+        const errorMessage = document.getElementById('errorMessage');
+        const loanAmountInput = document.getElementById('loanAmount');
+        
+        if (amount < 2000) {
+          loanAmountInput.classList.add('input-error');
+          errorIcon.style.display = 'block';
+          errorMessage.style.display = 'block';
+          return false;
+        } else {
+          loanAmountInput.classList.remove('input-error');
+          errorIcon.style.display = 'none';
+          errorMessage.style.display = 'none';
+          return true;
+        }
+      }
       
       // Format currency based on current language
       function formatCurrency(amount) {
@@ -1854,75 +1995,134 @@
         };
       }
       
-      // Update range value displays
-      function updateRangeValues() {
-        loanAmountValue.textContent = formatCurrency(loanAmountRange.value);
-        loanDurationValue.textContent = formatDuration(loanDurationRange.value);
-        interestRateValue.textContent = formatPercentage(interestRateRange.value);
+      // Fonction pour changer d'onglet/tranche
+      function switchRange(rangeNumber) {
+        currentRange = rangeNumber;
+        
+        // Mettre à jour les onglets
+        if (rangeNumber === 1) {
+          tabRange1.classList.add('active');
+          tabRange2.classList.remove('active');
+          range1Section.classList.add('active');
+          range2Section.classList.remove('active');
+        } else {
+          tabRange1.classList.remove('active');
+          tabRange2.classList.add('active');
+          range1Section.classList.remove('active');
+          range2Section.classList.add('active');
+        }
       }
       
-      // Sync range and input values
-      function syncRangeAndInput() {
-        // Loan Amount - Steps of 1000€
-        loanAmountRange.addEventListener('input', function() {
-            // Calculate nearest 1000€ step
-            let value = parseInt(this.value);
-            const step = 1000;
-            value = Math.round(value / step) * step;
-            
-            // Ensure we stay within bounds
-            value = Math.max(2000, Math.min(1000000, value));
-            
-            // Update values
-            this.value = value;
-            loanAmountInput.value = value;
-            loanAmountValue.textContent = formatCurrency(value);
-        });
-
-        loanAmountInput.addEventListener('input', function() {
-            let value = parseInt(this.value) || 2000; // Default to 2000 if NaN
-            
-            // Clamp value between min and max
-            value = Math.max(2000, Math.min(1000000, value));
-            
-            // Round to nearest 1000
-            const step = 1000;
-            value = Math.round(value / step) * step;
-            
-            // Update values
-            this.value = value;
-            loanAmountRange.value = value;
-            loanAmountValue.textContent = formatCurrency(value);
-        });
-
-        // Initial sync
-        loanAmountInput.value = Math.round(loanAmountRange.value / 1000) * 1000;
-        loanAmountRange.value = loanAmountInput.value;
-        
-        // Loan Duration
-        loanDurationRange.addEventListener('input', function() {
-          loanDurationSelect.value = this.value;
-          loanDurationValue.textContent = formatDuration(this.value);
-        });
-        
-        loanDurationSelect.addEventListener('change', function() {
-          loanDurationRange.value = this.value;
-          loanDurationValue.textContent = formatDuration(this.value);
-        });
-        
-        // Interest Rate
-        interestRateRange.addEventListener('input', function() {
-          interestRateInput.value = this.value;
-          interestRateValue.textContent = formatPercentage(this.value);
-        });
-        
-        interestRateInput.addEventListener('input', function() {
-          if (this.value < 1) this.value = 1;
-          if (this.value > 10) this.value = 10;
-          interestRateRange.value = this.value;
-          interestRateValue.textContent = formatPercentage(this.value);
-        });
+      // Fonction pour mettre à jour l'input depuis les sliders
+      function updateInputFromSlider(amount) {
+        isUpdatingFromSlider = true;
+        loanAmountInput.value = amount;
+        validateAmount(amount);
+        isUpdatingFromSlider = false;
       }
+      
+      // Fonction pour mettre à jour les sliders depuis l'input
+      function updateSlidersFromInput(amount) {
+        if (amount >= 2000 && amount <= 100000) {
+          // Première tranche
+          loanAmountRange1.value = amount;
+          loanAmountValue1.textContent = formatCurrency(amount);
+          switchRange(1);
+        } else if (amount >= 105000 && amount <= 1000000) {
+          // Deuxième tranche
+          loanAmountRange2.value = amount;
+          loanAmountValue2.textContent = formatCurrency(amount);
+          switchRange(2);
+        }
+      }
+      
+      // GESTION DES ÉVÉNEMENTS POUR LES DEUX SLIDERS
+      
+      // Slider 1 (2000€ - 100000€)
+      loanAmountRange1.addEventListener('input', function() {
+        const amount = parseInt(this.value);
+        loanAmountValue1.textContent = formatCurrency(amount);
+        updateInputFromSlider(amount);
+      });
+      
+      // Slider 2 (105000€ - 1000000€)
+      loanAmountRange2.addEventListener('input', function() {
+        const amount = parseInt(this.value);
+        loanAmountValue2.textContent = formatCurrency(amount);
+        updateInputFromSlider(amount);
+      });
+      
+      // Gestion des onglets
+      tabRange1.addEventListener('click', function() {
+        switchRange(1);
+        const amount = parseInt(loanAmountRange1.value);
+        updateInputFromSlider(amount);
+      });
+      
+      tabRange2.addEventListener('click', function() {
+        switchRange(2);
+        const amount = parseInt(loanAmountRange2.value);
+        updateInputFromSlider(amount);
+      });
+      
+      // Gestion de la saisie manuelle améliorée
+      loanAmountInput.addEventListener('input', function() {
+        if (isUpdatingFromSlider) return;
+        
+        let amount = parseInt(this.value) || 0;
+        
+        // Validation en temps réel mais sans correction automatique
+        validateAmount(amount);
+        
+        // Mettre à jour les sliders seulement si le montant est valide
+        if (amount >= 2000) {
+          updateSlidersFromInput(amount);
+        }
+      });
+      
+      // Correction automatique seulement au blur
+      loanAmountInput.addEventListener('blur', function() {
+        let amount = parseInt(this.value) || 2000;
+        
+        if (amount < 2000) {
+          amount = 2000;
+          this.value = amount;
+        } else if (amount > 100000 && amount < 105000) {
+          // Snap vers la valeur la plus proche
+          amount = amount <= 102500 ? 100000 : 105000;
+          this.value = amount;
+        } else if (amount > 1000000) {
+          amount = 1000000;
+          this.value = amount;
+        }
+        
+        validateAmount(amount);
+        updateSlidersFromInput(amount);
+      });
+      
+      // Loan Duration
+      loanDurationRange.addEventListener('input', function() {
+        loanDurationSelect.value = this.value;
+        loanDurationValue.textContent = formatDuration(this.value);
+      });
+      
+      loanDurationSelect.addEventListener('change', function() {
+        loanDurationRange.value = this.value;
+        loanDurationValue.textContent = formatDuration(this.value);
+      });
+      
+      // Interest Rate
+      interestRateRange.addEventListener('input', function() {
+        interestRateInput.value = this.value;
+        interestRateValue.textContent = formatPercentage(this.value);
+      });
+      
+      interestRateInput.addEventListener('input', function() {
+        if (this.value < 1) this.value = 1;
+        if (this.value > 10) this.value = 10;
+        interestRateRange.value = this.value;
+        interestRateValue.textContent = formatPercentage(this.value);
+      });
       
       // Calculate loan and update results
       function calculateLoan() {
@@ -1930,6 +2130,11 @@
         const months = parseInt(loanDurationSelect.value);
         const rate = parseFloat(interestRateInput.value);
         const loanType = loanTypeSelect.value;
+        
+        // Validation avant calcul
+        if (!validateAmount(principal)) {
+          return;
+        }
         
         const result = calculateAmortizationSchedule(principal, rate, months);
         
@@ -2103,7 +2308,10 @@
         const currentLang = event.detail.language;
         
         // Update formatted values
-        updateRangeValues();
+        loanAmountValue1.textContent = formatCurrency(parseInt(loanAmountRange1.value));
+        loanAmountValue2.textContent = formatCurrency(parseInt(loanAmountRange2.value));
+        loanDurationValue.textContent = formatDuration(loanDurationRange.value);
+        interestRateValue.textContent = formatPercentage(interestRateRange.value);
         
         // Update loan type options
         updateLoanTypeOptions(currentLang);
@@ -2114,9 +2322,13 @@
         }
       });
       
-      // Initialize
-      updateRangeValues();
-      syncRangeAndInput();
+      // INITIALISATION
+      const initialAmount = parseInt(loanAmountInput.value);
+      updateSlidersFromInput(initialAmount);
+      loanAmountValue1.textContent = formatCurrency(parseInt(loanAmountRange1.value));
+      loanAmountValue2.textContent = formatCurrency(parseInt(loanAmountRange2.value));
+      loanDurationValue.textContent = formatDuration(loanDurationRange.value);
+      interestRateValue.textContent = formatPercentage(interestRateRange.value);
     });
   </script>
   
