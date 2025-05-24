@@ -29,7 +29,38 @@
     --radius-sm: 6px;
     --transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
   }
+  /* FORCER LE MASQUAGE DE LA CROIX SUR DESKTOP */
+.mobile-menu-close {
+  display: none !important;
+}
 
+/* Afficher UNIQUEMENT sur mobile */
+@media (max-width: 768px) {
+  .mobile-menu-close {
+    display: flex !important;
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: var(--white);
+    font-size: 2rem;
+    cursor: pointer;
+    z-index: 1001;
+    transition: var(--transition);
+    width: 50px;
+    height: 50px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+  }
+  
+  .mobile-menu-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: rotate(90deg);
+    color: var(--secondary);
+  }
+}
   * { 
     box-sizing: border-box; 
     margin: 0; 
@@ -1482,6 +1513,123 @@ body.dark-mode {
       font-size: 1rem;
     }
   }
+  /* Amélioration du menu mobile */
+@media (max-width: 768px) {
+  nav ul {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(10, 37, 64, 0.98);
+    backdrop-filter: blur(10px);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    z-index: 1000;
+    transition: var(--transition);
+    opacity: 0;
+    visibility: hidden;
+  }
+  
+  nav ul.active {
+    display: flex;
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  /* Bouton de fermeture du menu mobile */
+  .mobile-menu-close {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    background: none;
+    border: none;
+    color: var(--white);
+    font-size: 2rem;
+    cursor: pointer;
+    z-index: 1001;
+    transition: var(--transition);
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+  }
+  
+  .mobile-menu-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: rotate(90deg);
+    color: var(--secondary);
+  }
+  
+  /* Animation d'entrée du menu */
+  nav ul.active li {
+    animation: slideInFromTop 0.5s ease forwards;
+    opacity: 0;
+  }
+  
+  nav ul.active li:nth-child(1) { animation-delay: 0.1s; }
+  nav ul.active li:nth-child(2) { animation-delay: 0.2s; }
+  nav ul.active li:nth-child(3) { animation-delay: 0.3s; }
+  nav ul.active li:nth-child(4) { animation-delay: 0.4s; }
+  nav ul.active li:nth-child(5) { animation-delay: 0.5s; }
+  nav ul.active li:nth-child(6) { animation-delay: 0.6s; }
+  
+  nav a {
+    font-size: 1.3rem;
+    padding: 15px 30px;
+    border-radius: 50px;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: var(--transition);
+    text-align: center;
+    min-width: 200px;
+  }
+  
+  nav a:hover {
+    background: var(--secondary);
+    color: var(--primary-dark);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(200, 164, 92, 0.3);
+  }
+}
+
+/* Animation pour les éléments du menu */
+@keyframes slideInFromTop {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Overlay pour fermer le menu en cliquant à côté */
+.menu-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.menu-overlay.active {
+  display: block;
+  opacity: 1;
+}
   
   /* Styles pour le sélecteur de langue */
   .language-selector-container {
@@ -1552,6 +1700,10 @@ body.dark-mode {
         <i class="fas fa-bars"></i>
       </button>
       <ul id="nav-menu">
+        <!-- Bouton de fermeture pour mobile -->
+        <button class="mobile-menu-close" id="mobile-menu-close">
+          <i class="fas fa-times"></i>
+        </button>      
         <li><a href="#hero" class="i18n-link" data-i18n="nav_home">Accueil</a></li>
         <li><a href="#testimonials" class="i18n-link" data-i18n="nav_testimonials">Témoignages</a></li>
         <li><a href="biographie.html" class="i18n-link" data-i18n="nav_biography">Biographie</a></li>
@@ -1571,6 +1723,8 @@ body.dark-mode {
         </li>
       </ul>
     </nav>
+        <!-- Overlay pour fermer le menu -->
+    <div class="menu-overlay" id="menu-overlay"></div>
   </div>
 </header>
 
@@ -2099,18 +2253,53 @@ body.dark-mode {
     offset: 100
   });
 
-  // Mobile Menu Toggle
-  const menuToggle = document.getElementById('menu-toggle');
-  const navMenu = document.getElementById('nav-menu');
+  // Mobile Menu Toggle amélioré
+const menuToggle = document.getElementById('menu-toggle');
+const navMenu = document.getElementById('nav-menu');
+const mobileMenuClose = document.getElementById('mobile-menu-close');
+const menuOverlay = document.getElementById('menu-overlay');
 
-  menuToggle.addEventListener('click', function() {
-    navMenu.classList.toggle('active');
-    if (navMenu.classList.contains('active')) {
-      menuToggle.innerHTML = '<i class="fas fa-times"></i>';
-    } else {
-      menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
-    }
-  });
+function openMobileMenu() {
+  navMenu.classList.add('active');
+  menuOverlay.classList.add('active');
+  menuToggle.innerHTML = '<i class="fas fa-times"></i>';
+  document.body.style.overflow = 'hidden';
+}
+
+function closeMobileMenu() {
+  navMenu.classList.remove('active');
+  menuOverlay.classList.remove('active');
+  menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
+  document.body.style.overflow = '';
+}
+
+// Event listeners pour le menu mobile
+menuToggle.addEventListener('click', function() {
+  if (navMenu.classList.contains('active')) {
+    closeMobileMenu();
+  } else {
+    openMobileMenu();
+  }
+});
+
+// Bouton de fermeture dans le menu
+mobileMenuClose.addEventListener('click', closeMobileMenu);
+
+// Fermer le menu en cliquant sur l'overlay
+menuOverlay.addEventListener('click', closeMobileMenu);
+
+// Fermer le menu en cliquant sur un lien
+const navLinks = document.querySelectorAll('#nav-menu a');
+navLinks.forEach(link => {
+  link.addEventListener('click', closeMobileMenu);
+});
+
+// Fermer le menu avec la touche Escape
+document.addEventListener('keydown', function(event) {
+  if (event.key === 'Escape' && navMenu.classList.contains('active')) {
+    closeMobileMenu();
+  }
+});
 
   // Back to Top Button
   const backToTopButton = document.getElementById('back-to-top');
